@@ -3,6 +3,7 @@
 
 # include	<stdio.h>
 # include	<stdlib.h>
+# include	<sys/time.h>
 
 typedef struct s_philo {
 	int	number_of_philosophers;
@@ -10,6 +11,7 @@ typedef struct s_philo {
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	number_of_times_each_philosopher_must_eat;
+	int	current_time;
 } t_philo;
 
 size_t	ft_strlen(const char *str);

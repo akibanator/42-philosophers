@@ -1,4 +1,5 @@
 #include	"philo.h"
+#include <sys/time.h>
 
 static int	is_valid_number(int argc, char *argv[])
 {
@@ -24,7 +25,7 @@ static int	is_valid_number(int argc, char *argv[])
 	return (0);
 }
 
-static int	check_args(int argc, char *argv[], t_philo **philo)
+static int	parse_args(int argc, char *argv[], t_philo **philo)
 {
 	long		num;
 
@@ -37,7 +38,7 @@ static int	check_args(int argc, char *argv[], t_philo **philo)
 		num = ft_atol(*argv);
 		if (num < -2147483648 || num > 2147483647)
 			return (1);
-		if (argc == 0)
+		if (argc == 0 && num > 0)
 			(*philo)->number_of_philosophers = num;
 		else if (argc == 1)
 			(*philo)->time_to_die = num;
@@ -55,12 +56,13 @@ static int	check_args(int argc, char *argv[], t_philo **philo)
 int main(int argc, char *argv[])
 {
 	t_philo	*philo;
+	struct timeval	c_time;
 	
 	if (argc < 5 || argc > 6)
 		return (0);
-	if (is_valid_number(argc, argv) || check_args(argc, argv, &philo))
+	if (is_valid_number(argc, argv) || parse_args(argc, argv, &philo))
 		return (0);
-
+	philo->current_time = gettimeofday(&c_time, NULL);
 	free(philo);
 	return (0);
 }

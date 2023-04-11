@@ -8,7 +8,7 @@ SOURCES =		main.c \
 OBJECTS =		$(SOURCES:.c=.o)
 
 CC =				cc
-CFLAGS =		-Wall -Werror -Wextra
+CFLAGS =		-Wall -Werror -Wextra -g -fsanitize=leak
 
 RM =				rm -rf
 
