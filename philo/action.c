@@ -6,13 +6,13 @@
 /*   By: akenji-a <akenji-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 18:20:07 by akenji-a          #+#    #+#             */
-/*   Updated: 2023/05/27 17:22:32 by akenji-a         ###   ########.fr       */
+/*   Updated: 2023/05/27 19:23:21 by akenji-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philo.h"
 
-int		check_death(t_philo *philo)
+int	check_death(t_philo *philo)
 {
 	pthread_mutex_lock(philo->args->stop_lock);
 	if (philo->args->is_dead == 1)
@@ -38,11 +38,20 @@ int	eating(t_philo *philo)
 		return (1);
 	pthread_mutex_lock(philo->right_fork);
 	if (check_death(philo))
+	{
+		pthread_mutex_unlock(philo->right_fork);
 		return (1);
+	}
 	print_action(philo, FORK);
+	if (is_philo_alone(philo))
+		return (1);
 	pthread_mutex_lock(philo->left_fork);
 	if (check_death(philo))
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
 		return (1);
+	}
 	print_action(philo, FORK);
 	print_action(philo, EAT);
 	update_philo(philo);

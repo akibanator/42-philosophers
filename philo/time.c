@@ -6,7 +6,7 @@
 /*   By: akenji-a <akenji-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 19:56:01 by akenji-a          #+#    #+#             */
-/*   Updated: 2023/05/27 16:28:40 by akenji-a         ###   ########.fr       */
+/*   Updated: 2023/05/27 19:19:09 by akenji-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ unsigned int	timer(unsigned int start_time)
 	return (current_time - start_time);
 }
 
-unsigned int	get_delta_time(unsigned int last_meal_time)
+unsigned int	delta_time(unsigned int last_meal_time)
 {
 	return (get_current_time() - last_meal_time);
 }

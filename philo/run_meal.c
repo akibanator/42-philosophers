@@ -6,17 +6,29 @@
 /*   By: akenji-a <akenji-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 05:05:10 by akenji-a          #+#    #+#             */
-/*   Updated: 2023/05/27 17:21:30 by akenji-a         ###   ########.fr       */
+/*   Updated: 2023/05/27 19:18:54 by akenji-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philo.h"
 
+static int	check_meals_count(t_philo *philo)
+{
+	pthread_mutex_lock(philo->meal_lock);
+	if (philo->meals_count != 0)
+	{
+		pthread_mutex_unlock(philo->meal_lock);
+		return (1);
+	}
+	pthread_mutex_unlock(philo->meal_lock);
+	return (0);
+}
+
 void	*run_waiter(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 		usleep(1000);
-	while (philo->meals_count != 0)
+	while (check_meals_count(philo))
 	{
 		if (eating(philo))
 			break ;
@@ -28,19 +40,6 @@ void	*run_waiter(t_philo *philo)
 	return (NULL);
 }
 
-void	free_threads(pthread_t *threads, int nb_philos)
-{
-	int	i;
-
-	i = 0;
-	while (i < nb_philos)
-	{
-		pthread_join(threads[i], NULL);
-		i++;
-	}
-	free(threads);
-}
-
 int	check_corpse(t_philo *philos)
 {
 	int	i;
@@ -49,7 +48,7 @@ int	check_corpse(t_philo *philos)
 	while (i < philos->args->number_of_philosophers)
 	{
 		pthread_mutex_lock(philos[i].meal_lock);
-		if (get_delta_time(philos[i].last_meal_time) >= philos[i].args->time_to_die)
+		if (delta_time(philos[i].last_meal_time) >= philos[i].args->time_to_die)
 		{
 			pthread_mutex_lock(philos[i].args->stop_lock);
 			philos->args->is_dead = 1;

@@ -15,25 +15,25 @@ SOURCES =		main.c \
 
 OBJECTS =		$(SOURCES:.c=.o)
 
-CC =				gcc
-CFLAGS =		-g -fsanitize=leak -Wall -Werror -Wextra
+CC =			cc
+CFLAGS =		-Wall -Werror -Wextra
 
-RM =				rm -rf
+RM =			rm -rf
 
-all:				${NAME}
+all:			${NAME}
 
 ${NAME}:		${OBJECTS}
-						${CC} ${CFLAGS} ${OBJECTS} -o $@
+					${CC} ${CFLAGS} ${OBJECTS} -o $@
 
-%.o:				%.c ${HEADERS}
-						${CC} ${CFLAGS} -c $<
+%.o:			%.c ${HEADERS}
+					${CC} ${CFLAGS} -c $<
 
 clean:
-						${RM} ${OBJECTS}
+				${RM} ${OBJECTS}
 
 fclean:			clean
-						${RM} ${NAME}
+					${RM} ${NAME}
 
-re:					fclean all
+re:				fclean all
 
 .PHONY:			all, clean, fclean, re

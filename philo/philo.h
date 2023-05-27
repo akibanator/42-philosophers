@@ -6,7 +6,7 @@
 /*   By: akenji-a <akenji-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 19:08:04 by akenji-a          #+#    #+#             */
-/*   Updated: 2023/05/27 17:24:56 by akenji-a         ###   ########.fr       */
+/*   Updated: 2023/05/27 19:23:01 by akenji-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int				eating(t_philo *philo);
 void			print_action(t_philo *philo, int status);
 int				sleeping(t_philo *philo);
 int				thinking(t_philo *philo);
-unsigned int	get_delta_time(unsigned int last_meal_time);
+unsigned int	delta_time(unsigned int last_meal_time);
+void			free_threads(pthread_t *threads, int nb_philos);
+int				is_philo_alone(t_philo *philo);
 
 #endif
