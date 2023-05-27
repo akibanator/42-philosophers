@@ -1,69 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akenji-a <akenji-a@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/24 17:58:18 by akenji-a          #+#    #+#             */
+/*   Updated: 2023/05/27 17:24:40 by akenji-a         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include	"philo.h"
-#include <sys/time.h>
 
-static int	is_valid_number(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
-	int	i;
-	int	y;
+	t_args			*args;
+	t_philo			*philos;
+	pthread_mutex_t	**forks;
 
-	i = 1;
-	y = 0;
-	while (i < argc)
-	{
-		while (argv[i][y])
-		{
-			if (argv[i][y] == '-')
-				y++;
-			else if (ft_isdigit(argv[i][y]))
-				y++;
-			else
-				return (1);
-		}
-		y = 0;
-		i++;
-	}
-	return (0);
-}
-
-static int	parse_args(int argc, char *argv[], t_philo **philo)
-{
-	long		num;
-
-	*philo = malloc(sizeof(t_philo));
-	if (*philo == NULL)
-		return (1);
-	argc = 0;
-	while (*(++argv) != NULL)
-	{
-		num = ft_atol(*argv);
-		if (num < -2147483648 || num > 2147483647)
-			return (1);
-		if (argc == 0 && num > 0)
-			(*philo)->number_of_philosophers = num;
-		else if (argc == 1)
-			(*philo)->time_to_die = num;
-		else if (argc == 2)
-			(*philo)->time_to_eat = num;
-		else if (argc == 3)
-			(*philo)->time_to_sleep = num;
-		else if (argc == 4)
-			(*philo)->number_of_times_each_philosopher_must_eat = num;
-		argc++;
-	}
-	return (0);
-}
-
-int main(int argc, char *argv[])
-{
-	t_philo	*philo;
-	struct timeval	c_time;
-	
 	if (argc < 5 || argc > 6)
+	{
+		printf("To run the program: ./philo n1 n2 n3 n4 n5(optional)\n");
 		return (0);
-	if (is_valid_number(argc, argv) || parse_args(argc, argv, &philo))
+	}
+	if (is_valid_number(argc, argv))
+	{
+		printf("All the arguments must be positive integer numbers\n");
 		return (0);
-	philo->current_time = gettimeofday(&c_time, NULL);
-	free(philo);
+	}
+	args = setup_args(argv);
+	forks = init_forks(args->number_of_philosophers);
+	philos = init_philos(args, forks);
+	run_meal(philos, args);
+	free_forks(forks, args->number_of_philosophers);
+	free_all(args, philos);
 	return (0);
 }
-
