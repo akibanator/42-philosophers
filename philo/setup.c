@@ -6,7 +6,7 @@
 /*   By: akenji-a <akenji-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 17:49:23 by akenji-a          #+#    #+#             */
-/*   Updated: 2023/05/27 19:29:04 by akenji-a         ###   ########.fr       */
+/*   Updated: 2023/05/27 20:55:09 by akenji-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ static void	parse_args(char *argv[], t_args *args, int i)
 			args->time_to_eat = num;
 		else if (i == 3)
 			args->time_to_sleep = num;
+		else if (i == 4)
+				args->number_of_times_each_philosopher_must_eat = num;
 		i++;
 	}
 	if (i == 4)
-			args->number_of_times_each_philosopher_must_eat = num;
-	else
 		args->number_of_times_each_philosopher_must_eat = -1;
 }
 
